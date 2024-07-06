@@ -7,6 +7,7 @@ list_content = os.listdir(start_point_path)
 print(f"Отправная точка {path_name}")
 print(sorted(list_content), "\n")
 
+
 # проверка, является ли элемент файлом, если да, то читаем
 def is_file(lst: list):
     for elem in lst:

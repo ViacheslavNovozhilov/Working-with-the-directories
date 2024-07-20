@@ -1,46 +1,70 @@
 import os
 from pathlib import Path
+from pprint import pprint
 
 path_name = "D:\\"
 start_point_path = os.path.join(path_name)
-list_content = os.listdir(start_point_path)
-print(f"Отправная точка {path_name}")
-print(sorted(list_content), "\n")
 
 
-# проверка, является ли элемент файлом, если да, то читаем
-def is_file(lst: list):
-    for elem in lst:
-        if os.path.isfile(elem):
-            with open(elem, "r", encoding="utf-8") as file:
-                file.read()
+def list_content(path: str):
+    return sorted(os.listdir(path))
 
 
-def content_get_number(lst: list):
+print(f"Отправная точка диск D - {list_content(start_point_path)}\n")
+
+
+def get_content_number(content):
     content_dict = {}
-    for i in range(len(lst)):
-        content_dict[i] = lst[i]
+    content = list_content(start_point_path)
+    for i in range(len(content)):
+        content_dict[i] = content[i]
     return content_dict
 
 
-def show_content(content):
-    if isinstance(content, dict):
-        print(content)
-    else:
-        is_file(content)
+# проверка, является ли элемент файлом, если да, то читаем
+"""def is_file(lst: list):
+    for elem in lst:
+        if os.path.isfile(elem):
+            mass = []
+            with open(elem, "r", encoding="utf-8") as file:
+                for line in file:
+                    mass.append(line)
+                    return mass
 
 
-def question():
-    answer = input("Вы хотите просмотреть содержимое каталога? - y or n:")
-    if answer == "y":
-        show_content(content_get_number(list_content))
-    elif answer == "n":
-        pass
-    else:
-        print(f"Вы должны ввести y или n !")
+def is_dir(lst: list):
+    for elem in lst:
+        if os.path.isdir(elem):
+            pass
+"""
 
 
-question()
+def choose_number(path):
+    number = int(input("Введите номер файла или каталога - "))
+    dict_file_dir = get_content_number(start_point_path)
+    for key, value in dict_file_dir.items():
+        if key == number:
+            path = value + ":\\"
+            new_start_point = os.path.join(path)
+            pprint(get_content_number(new_start_point))
+
+
+answer = input("Вы хотите просмотреть содержимое каталога? - y or n:")
+if answer == "y":
+    res = get_content_number(start_point_path)
+    pprint(res)
+    choose_number(path_name)
+
+elif answer == "n":
+    for num, elem in enumerate(list_content(start_point_path)):
+        print(num, elem)
+else:
+    print(f"Вы должны ввести y или n !")
+
+
+
+
+
 
 
 

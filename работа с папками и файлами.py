@@ -10,6 +10,7 @@ def list_content(path: str):
     return sorted(os.listdir(path))
 
 
+lst = list_content(point_path)
 print(f"Отправная точка диск D - {list_content(point_path)}\n")
 
 
@@ -20,39 +21,41 @@ def get_content_number(lst_content):
     return content_dict
 
 
+pprint(get_content_number(lst))
+
+
 # проверка, является ли элемент файлом, если да, то читаем
-"""def is_file(lst: list):
-    for elem in lst:
+"""def is_file(dir_lst: list):
+    for elem in dir_lst:
         if os.path.isfile(elem):
-            mass = []
             with open(elem, "r", encoding="utf-8") as file:
-                for line in file:
-                    mass.append(line)
-                    return mass
+                info = file.read()
+                return info
 
 
-def is_dir(lst: list):
-    for elem in lst:
+def is_dir(dir_lst: list):
+    for elem in dir_lst:
         if os.path.isdir(elem):
-            pass
-"""
+            question()"""
 
 
 def choose_number(num):
-    lst = list_content(point_path)
-    dict_file_dir = get_content_number(lst)
+    lst_res = list_content(point_path)
+    dict_file_dir = get_content_number(lst_res)
     for key, value in dict_file_dir.items():
+        if os.path.isfile(value):
+            with open(value, "r", encoding="utf-8") as file:
+                info = file.read()
+                return info
         if num == key:
-            new_start_point = os.path.join(value)
+            new_start_point = os.path.join(point_path, value)
             res = list_content(new_start_point)
             return get_content_number(res)
 
 
 def question(answer):
-    lst = list_content(point_path)
     if answer == "y":
-        res = get_content_number(lst)
-        pprint(res)
+        get_file_dir_number(int(input("Введите номер файла или каталога - ")))
     elif answer == "n":
         for num, elem in enumerate(list_content(point_path)):
             print(num, elem)
@@ -61,8 +64,8 @@ def question(answer):
 
 
 def get_file_dir_number(number):
-    pprint(choose_number(number))
+    res = choose_number(number)
+    pprint(res)
 
 
 question(input("Хотите посмотреть содержимое каталога? - "))
-get_file_dir_number(int(input("Введите номер файла или каталога - ")))

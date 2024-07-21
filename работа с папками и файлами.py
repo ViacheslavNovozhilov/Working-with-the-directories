@@ -2,22 +2,21 @@ import os
 from pathlib import Path
 from pprint import pprint
 
-path_name = "D:\\"
-start_point_path = os.path.join(path_name)
+path_name = r'D:\\'
+point_path = os.path.join(path_name)
 
 
 def list_content(path: str):
     return sorted(os.listdir(path))
 
 
-print(f"Отправная точка диск D - {list_content(start_point_path)}\n")
+print(f"Отправная точка диск D - {list_content(point_path)}\n")
 
 
-def get_content_number(content):
+def get_content_number(lst_content):
     content_dict = {}
-    content = list_content(start_point_path)
-    for i in range(len(content)):
-        content_dict[i] = content[i]
+    for i in range(len(lst_content)):
+        content_dict[i] = lst_content[i]
     return content_dict
 
 
@@ -39,33 +38,31 @@ def is_dir(lst: list):
 """
 
 
-def choose_number(path):
-    number = int(input("Введите номер файла или каталога - "))
-    dict_file_dir = get_content_number(start_point_path)
+def choose_number(num):
+    lst = list_content(point_path)
+    dict_file_dir = get_content_number(lst)
     for key, value in dict_file_dir.items():
-        if key == number:
-            path = value + ":\\"
-            new_start_point = os.path.join(path)
-            pprint(get_content_number(new_start_point))
+        if num == key:
+            new_start_point = os.path.join(value)
+            res = list_content(new_start_point)
+            return get_content_number(res)
 
 
-answer = input("Вы хотите просмотреть содержимое каталога? - y or n:")
-if answer == "y":
-    res = get_content_number(start_point_path)
-    pprint(res)
-    choose_number(path_name)
-
-elif answer == "n":
-    for num, elem in enumerate(list_content(start_point_path)):
-        print(num, elem)
-else:
-    print(f"Вы должны ввести y или n !")
-
+def question(answer):
+    lst = list_content(point_path)
+    if answer == "y":
+        res = get_content_number(lst)
+        pprint(res)
+    elif answer == "n":
+        for num, elem in enumerate(list_content(point_path)):
+            print(num, elem)
+    else:
+        print(f"Вы должны ввести y или n !")
 
 
+def get_file_dir_number(number):
+    pprint(choose_number(number))
 
 
-
-
-
-
+question(input("Хотите посмотреть содержимое каталога? - "))
+get_file_dir_number(int(input("Введите номер файла или каталога - ")))

@@ -44,13 +44,13 @@ def choose_number(num):
     dict_file_dir = get_content_number(lst_res)
     for key, value in dict_file_dir.items():
         if os.path.isfile(value):
-            with open(value, "r", encoding="utf-8") as file:
+            new_start_point = os.path.join(point_path, value)
+            if num == key:
+                res = list_content(new_start_point)
+                return get_content_number(res)
+            with open(new_start_point, "r", encoding="utf-8") as file:
                 info = file.read()
                 return info
-        if num == key:
-            new_start_point = os.path.join(point_path, value)
-            res = list_content(new_start_point)
-            return get_content_number(res)
 
 
 def question(answer):

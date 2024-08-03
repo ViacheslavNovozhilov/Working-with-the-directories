@@ -1,5 +1,6 @@
 import csv
 import re
+#клон для гита
 
 
 def registration():

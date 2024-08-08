@@ -24,33 +24,22 @@ def get_content_number(lst_content):
 pprint(get_content_number(lst))
 
 
-# проверка, является ли элемент файлом, если да, то читаем
-"""def is_file(dir_lst: list):
-    for elem in dir_lst:
-        if os.path.isfile(elem):
-            with open(elem, "r", encoding="utf-8") as file:
-                info = file.read()
-                return info
-
-
-def is_dir(dir_lst: list):
-    for elem in dir_lst:
-        if os.path.isdir(elem):
-            question()"""
-
-
 def choose_number(num):
     lst_res = list_content(point_path)
     dict_file_dir = get_content_number(lst_res)
     for key, value in dict_file_dir.items():
-        if os.path.isfile(value):
-            new_start_point = os.path.join(point_path, value)
-            if num == key:
+        new_start_point = os.path.join(point_path, value)
+        if num == key:
+            if os.path.isfile(new_start_point):
+                with open(new_start_point, "r", encoding="utf-8") as file:
+                    while True:
+                        line = file.readline()
+                        if not line:
+                            break
+                        print(line.strip())
+            else:
                 res = list_content(new_start_point)
                 return get_content_number(res)
-            with open(new_start_point, "r", encoding="utf-8") as file:
-                info = file.read()
-                return info
 
 
 def question(answer):

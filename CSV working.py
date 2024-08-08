@@ -17,10 +17,10 @@ def registration():
         print("Введите корректный email!")
 
 
-def authorization(result):
+def authorization(result_csv_read):
     log = input("Введите логин: ")
     pas = input("Введите пароль: ")
-    for item in result:
+    for item in result_csv_read:
         if item.get("Логин") == log:
             if item.get("Пароль") == pas:
                 print("Вы успешно авторизовались!")
@@ -52,13 +52,13 @@ def check_login_exist(login, email):
     with open('data.csv', 'r', encoding="utf-8") as file:
         reader = csv.reader(file)
         for row in reader:
-            if login == row[1] or email == row[0]:
+            if email == row[0] or login == row[1]:
                 return True
             else:
                 return False
 
 
-answer = int(input("Введите 1, если хотите войти\nВведите 2, если хотите зарегистрироваться"))
+answer = int(input("Введите 1, если хотите войти\nВведите 2, если хотите зарегистрироваться\n"))
 
 match answer:
     case 1:

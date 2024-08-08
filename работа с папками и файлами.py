@@ -9,8 +9,10 @@ def registration():
     lst_data = [email, login, passwd]
     email_pattern = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
     if re.match(email_pattern, email) is not None:
-        csv_create(lst_data)
-        check_login_exist(login, email)
+        if check_login_exist(login, email) == False:
+            csv_create(lst_data)
+        else:
+            print("Такой пользователь уже существует!")
     else:
         print("Введите корректный email!")
 
@@ -51,8 +53,9 @@ def check_login_exist(login, email):
         reader = csv.reader(file)
         for row in reader:
             if login == row[1] or email == row[0]:
-                print("Пользователь с таким логином или email уже существует.")
-                return
+                return True
+            else:
+                return False
 
 
 answer = int(input("Введите 1, если хотите войти\nВведите 2, если хотите зарегистрироваться"))

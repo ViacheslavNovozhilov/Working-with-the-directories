@@ -21,9 +21,6 @@ def get_content_number(lst_content):
     return content_dict
 
 
-pprint(get_content_number(lst))
-
-
 def choose_number(num):
     lst_res = list_content(point_path)
     dict_file_dir = get_content_number(lst_res)
@@ -32,10 +29,7 @@ def choose_number(num):
         if num == key:
             if os.path.isfile(new_start_point):
                 with open(new_start_point, "r", encoding="utf-8") as file:
-                    while True:
-                        line = file.readline()
-                        if not line:
-                            break
+                    for line in file:
                         print(line.strip())
             else:
                 res = list_content(new_start_point)
@@ -54,7 +48,11 @@ def question(answer):
 
 def get_file_dir_number(number):
     res = choose_number(number)
-    pprint(res)
+    return res
+
+
+pprint(get_content_number(lst))
 
 
 question(input("Хотите посмотреть содержимое каталога? - "))
+

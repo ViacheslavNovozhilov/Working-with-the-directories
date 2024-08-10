@@ -43,6 +43,8 @@ def recieve_content_by_chosen_number(num):
             elif is_dir_check(new_start_point):
                 res = list_content(new_start_point)
                 return get_content_number(res)
+            else:
+                return
 
 
 def get_file_dir_number(number):
@@ -55,10 +57,11 @@ answer = input(f"""Если вы хотите просмотреть содер�
 match answer:
     case "y":
         pprint(get_content_number(lst))
+        answer1 = int(input("Введите номер файла или каталога - "))
+        pprint(get_file_dir_number(answer1))
     case "n":
-        print(point_path)
+        print(f"Вы находитесь в {point_path}")
     case _:
         print(f"Вы должны ввести y или n !")
 
-answer1 = int(input("Введите номер файла или каталога - "))
-pprint(get_file_dir_number(answer1))
+

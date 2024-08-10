@@ -21,38 +21,44 @@ def get_content_number(lst_content):
     return content_dict
 
 
-def choose_number(num):
+def is_file_check(point):
+    if os.path.isfile(point):
+        return True
+
+
+def is_dir_check(point):
+    if os.path.isdir(point):
+        return True
+
+
+def recieve_content_by_chosen_number(num):
     lst_res = list_content(point_path)
     dict_file_dir = get_content_number(lst_res)
     for key, value in dict_file_dir.items():
         new_start_point = os.path.join(point_path, value)
         if num == key:
-            if os.path.isfile(new_start_point):
+            if is_file_check(new_start_point):
                 with open(new_start_point, "r", encoding="utf-8") as file:
-                    for line in file:
-                        print(line.strip())
-            else:
+                    return [line.strip() for line in file]
+            elif is_dir_check(new_start_point):
                 res = list_content(new_start_point)
                 return get_content_number(res)
 
 
-def question(answer):
-    if answer == "y":
-        get_file_dir_number(int(input("Введите номер файла или каталога - ")))
-    elif answer == "n":
-        for num, elem in enumerate(list_content(point_path)):
-            print(num, elem)
-    else:
-        print(f"Вы должны ввести y или n !")
-
-
 def get_file_dir_number(number):
-    res = choose_number(number)
+    res = recieve_content_by_chosen_number(number)
     return res
 
 
-pprint(get_content_number(lst))
+answer = input(f"""Если вы хотите просмотреть содержимое {point_path}, нажмите Y
+Если нет, то нажмите N\n""")
+match answer:
+    case "y":
+        pprint(get_content_number(lst))
+    case "n":
+        print(point_path)
+    case _:
+        print(f"Вы должны ввести y или n !")
 
-
-question(input("Хотите посмотреть содержимое каталога? - "))
-
+answer1 = int(input("Введите номер файла или каталога - "))
+pprint(get_file_dir_number(answer1))

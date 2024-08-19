@@ -1,5 +1,14 @@
 import csv
 import re
+import os.path
+import os
+
+
+def csv_file_exists(path):
+    if os.path.exists(path):
+        return True
+    else:
+        return False
 
 
 def registration():
@@ -9,10 +18,13 @@ def registration():
     lst_data = [email, login, passwd]
     email_pattern = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
     if re.match(email_pattern, email) is not None:
-        if check_login_exist(login, email) == False:
-            csv_create(lst_data)
+        if csv_file_exists("data.csv"):
+            if check_login_exist(login, email) == False:
+                csv_append(lst_data)
+            else:
+                print("Такой пользователь уже существует!")
         else:
-            print("Такой пользователь уже существует!")
+            csv_create(lst_data)
     else:
         print("Введите корректный email!")
 
@@ -34,13 +46,19 @@ def authorization(result_csv_read):
 
 
 def csv_create(lst: list):
-    with open("data.csv", "a", newline='', encoding="utf-8") as file:
+    with open(r"data.csv", "w", newline='', encoding="utf-8") as file:
+        writer = csv.writer(file)
+        writer.writerow(lst)
+
+
+def csv_append(lst: list):
+    with open(r"data.csv", "a", newline='', encoding="utf-8") as file:
         writer = csv.writer(file)
         writer.writerow(lst)
 
 
 def csv_read() -> [dict]:
-    with open("data.csv", "r", encoding="utf-8") as file:
+    with open(r"data.csv", "r", encoding="utf-8") as file:
         fieldnames = ["email", "Логин", "Пароль"]
         reader = csv.DictReader(file, fieldnames=fieldnames)
         row_list = []
@@ -50,7 +68,7 @@ def csv_read() -> [dict]:
 
 
 def check_login_exist(login, email):
-    with open('data.csv', 'r', encoding="utf-8") as file:
+    with open(r'data.csv', 'r', encoding="utf-8") as file:
         reader = csv.reader(file)
         for row in reader:
             if email == row[0] or login == row[1]:

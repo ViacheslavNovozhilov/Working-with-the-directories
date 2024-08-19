@@ -1,4 +1,4 @@
-from CSV_logic import authorization, registration, csv_read
+from CSV_logic import authorization, registration, csv_read, csv_append
 
 
 def start():

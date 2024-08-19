@@ -31,7 +31,7 @@ def registration():
             csv_create(lst_data)
     else:
         print("Введите корректный email!")
-        return 
+        return
 
 
 def authorization(result_csv_read):

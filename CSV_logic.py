@@ -4,6 +4,9 @@ import os.path
 import os
 
 
+file_path = r"D:/PycharmProjects/Working-with-the-directories/data.csv"
+
+
 def csv_file_exists(path):
     if os.path.exists(path):
         return True
@@ -18,15 +21,17 @@ def registration():
     lst_data = [email, login, passwd]
     email_pattern = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
     if re.match(email_pattern, email) is not None:
-        if csv_file_exists("data.csv"):
+        if csv_file_exists(file_path):
             if check_login_exist(login, email) == False:
                 csv_append(lst_data)
             else:
                 print("Такой пользователь уже существует!")
+                return
         else:
             csv_create(lst_data)
     else:
         print("Введите корректный email!")
+        return 
 
 
 def authorization(result_csv_read):

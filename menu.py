@@ -22,6 +22,8 @@ def start():
                         result = csv_read()
                         for item in result:
                             print(item)
+                    else:
+                        print("Не верный пароль администратора!\n")
                 else:
                     print("Данных нет!")
             case 4:

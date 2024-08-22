@@ -4,11 +4,21 @@ import os.path
 import os
 
 
-file_path = r"D:/PycharmProjects/Working-with-the-directories/data.csv"
+def config():
+    path = r"D:/PycharmProjects/Working-with-the-directories/data.csv"
+    return os.path.join(path)
 
 
 def csv_file_exists(path):
     if os.path.exists(path):
+        return True
+    else:
+        return False
+
+
+def email_validation(email):
+    email_pattern = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+    if re.match(email_pattern, email) is not None:
         return True
     else:
         return False
@@ -19,9 +29,8 @@ def registration():
     login = input("Придумайте логин: ")
     passwd = input("Придумайте пароль: ")
     lst_data = [email, login, passwd]
-    email_pattern = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
-    if re.match(email_pattern, email) is not None:
-        if csv_file_exists(file_path):
+    if email_validation(email):
+        if csv_file_exists(config()):
             if check_login_exist(login, email) == False:
                 csv_append(lst_data)
             else:
@@ -40,13 +49,13 @@ def authorization(result_csv_read):
     for item in result_csv_read:
         if item.get("Логин") == log:
             if item.get("Пароль") == pas:
-                print("Вы успешно авторизовались!")
+                print("Вы успешно авторизовались!\n")
                 return
             else:
-                print("Введен не верный пароль!")
+                print("Введен не верный пароль!\n")
                 return
         else:
-            print("Такого пользователя нет!")
+            print("Такого пользователя нет!\n")
             return
 
 

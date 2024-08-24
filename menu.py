@@ -1,7 +1,9 @@
-from CSV_logic import authorization, registration, csv_read, csv_file_exists, config
+from CSV_logic import authorization, registration, csv_read, csv_file_exists
+from config import Config
 
 
 def start():
+    cfg = Config()
     while True:
         answer = int(input("""Введите 1, если хотите войти
 Введите 2, если хотите зарегистрироваться
@@ -10,16 +12,20 @@ def start():
 
         match answer:
             case 1:
-                authorization(csv_read())
+                result = authorization(csv_read(cfg))
+                if result:
+                    print("Вы успешно авторизовались!\n")
+                else:
+                    print("Введен не верный пароль!\n")
             case 2:
-                registration()
+                registration(cfg)
             case 3:
                 print("Для просмотра пользователей необходимо ввести пароль администратора!")
                 admin_passwd = "12345"
-                if csv_file_exists(config()):
+                if csv_file_exists(cfg.storage_path):
                     request = input("Введите пароль администратора: ")
                     if request == admin_passwd:
-                        result = csv_read()
+                        result = csv_read(cfg)
                         for item in result:
                             print(item)
                     else:

@@ -1,12 +1,12 @@
 import csv
-import re
-import os.path
 import os
+import os.path
+import re
 
 
-def config():
-    path = r"D:/PycharmProjects/Working-with-the-directories/data.csv"
-    return os.path.join(path)
+# def config():
+#     path = r"D:/PycharmProjects/Working-with-the-directories/data.csv"
+#     return os.path.join(path)
 
 
 def csv_file_exists(path):
@@ -24,55 +24,56 @@ def email_validation(email):
         return False
 
 
-def registration():
+def registration(config):
     email = input("Введите email: ")
     login = input("Придумайте логин: ")
     passwd = input("Придумайте пароль: ")
     lst_data = [email, login, passwd]
     if email_validation(email):
-        if csv_file_exists(config()):
-            if check_login_exist(login, email) == False:
-                csv_append(lst_data)
+        if csv_file_exists(config.storage_path):
+            if not check_login_exist(login, email, config):
+                csv_append(lst_data, config)
+                return True
             else:
                 print("Такой пользователь уже существует!")
                 return
         else:
-            csv_create(lst_data)
+            csv_create(lst_data, config)
     else:
         print("Введите корректный email!")
         return
 
 
-def authorization(result_csv_read):
+def authorization(result_csv_read) -> bool:
     log = input("Введите логин: ")
     pas = input("Введите пароль: ")
     for item in result_csv_read:
         if item.get("Логин") == log:
             if item.get("Пароль") == pas:
                 print("Вы успешно авторизовались!\n")
-                return
+                return True
             else:
                 print("Введен не верный пароль!\n")
-                return
+                return False
         else:
             print("Такого пользователя нет!\n")
             return
 
 
-def csv_create(lst: list):
-    with open(r"data.csv", "w", newline='', encoding="utf-8") as file:
+def csv_create(lst: list, config):
+    with open(config.storage_path, "w", newline='', encoding="utf-8") as file:
         writer = csv.writer(file)
         writer.writerow(lst)
 
 
-def csv_append(lst: list):
-    with open(r"data.csv", "a", newline='', encoding="utf-8") as file:
+def csv_append(lst: list, config):
+    with open(config.storage_path, "a", newline='', encoding="utf-8") as file:
         writer = csv.writer(file)
         writer.writerow(lst)
 
 
-def csv_read() -> [dict]:
-    with open(r"data.csv", "r", encoding="utf-8") as file:
+def csv_read(config) -> [dict]:
+    with open(config.storage_path, "r", encoding="utf-8") as file:
         fieldnames = ["email", "Логин", "Пароль"]
         reader = csv.DictReader(file, fieldnames=fieldnames)
         row_list = []
@@ -81,8 +82,8 @@ def csv_read() -> [dict]:
         return row_list
 
 
-def check_login_exist(login, email):
-    with open(r'data.csv', 'r', encoding="utf-8") as file:
+def check_login_exist(login, email, config):
+    with open(config.storage_path, 'r', encoding="utf-8") as file:
         reader = csv.reader(file)
         for row in reader:
             if email == row[0] or login == row[1]:
